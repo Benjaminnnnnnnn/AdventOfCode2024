@@ -7,12 +7,15 @@ const Lookup = {
   S: "F",
 };
 const data = fs
-  .readFileSync("./data/four.txt", "utf8")
+  .readFileSync("./data/test.txt", "utf8")
   .split("\n")
   .map((line) => line.split(""));
 data.pop();
 const recurArea = (row, col, key = "X") => {
+  console.log(key, row, col);
+  let count = 0;
   if (key == "S") {
+    console.log("Found", row, col);
     return 1;
   }
   const next_val = Lookup[key];
@@ -27,7 +30,11 @@ const recurArea = (row, col, key = "X") => {
         ) &&
         data[row + i][col + j] == next_val
       ) {
-        return recurArea(row + i, col + j, next_val);
+        let found = recurArea(row + i, col + j, next_val);
+        if (found) {
+          data[row + i][col + j] = ".";
+        }
+        return found;
       }
     }
   }
